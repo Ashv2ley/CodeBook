@@ -9,6 +9,7 @@ import Signup from "./pages/Signup.tsx";
 import Signin from "./pages/Signin.tsx";
 import Trash from "./pages/Trash.tsx";
 import Note from "./pages/Note.tsx";
+import Shared from "./pages/Shared.tsx";
 
 export default function App() {
     return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/sign-in" element={<Signin/>} />
             <Route path="/sign-up" element={<Signup />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
+            <Route path="/shared" element={<Shared />} />
             <Route path="/trash" element={<Trash />} />
         </Routes>
     );

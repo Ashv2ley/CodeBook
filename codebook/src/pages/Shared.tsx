@@ -1,9 +1,9 @@
 import PageOutline from "../components/PageOutline.tsx";
 
-export default function Trash() {
+export default function Shared() {
     return (
         <div className="">
-            <PageOutline pageName={"Trash"} />
+            <PageOutline pageName={"Shared"} />
         </div>
     );
 }
