@@ -6,7 +6,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolder, faBook } from "@fortawesome/free-solid-svg-icons";
+import { faFolder, faBook, faFile } from "@fortawesome/free-solid-svg-icons";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
@@ -24,19 +24,25 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function Documents() {
-    const [folder, setFolder] = useState(false);
-    const [notebook, setNotebook] = useState(false);
+    const [folderOpen, setFolderOpen] = useState(false);
+    const [notebookOpen, setNotebookOpen] = useState(false);
+    const [name, setName] = useState("Untitled");
     const [selectedColor, setSelectedColor] = useState("#74C0FC");
+    const [isBookmarked, setBookmark] = useState(false);
     const navigate = useNavigate();
-
     const colors = [
         "#FF6768", "#FF9138", "#FFDE59", "#8DDB6D", "#74C0FC", "#C6B1FA", "#FEC5CE", "#C2C2C2", "#242424",
     ];
 
     const handleClose = () => {
-        setFolder(false);
-        setNotebook(false);
+        setFolderOpen(false);
+        setNotebookOpen(false);
+        setName("Untitled");
+        setSelectedColor("#74C0FC");
+    };
 
+    const handleRename = (e:any) => {
+        setName(e.target.value);
     };
 
     const handleColorClick = (color: string) => {
@@ -44,18 +50,224 @@ export default function Documents() {
     };
 
     function handleFolderClick() {
-        setSelectedColor("#74C0FC")
-        setFolder(true);
+        setFolderOpen(true);
     }
 
     function handleNotebookClick() {
-        setSelectedColor("#74C0FC")
-        setNotebook(true);
+        setNotebookOpen(true);
     }
 
     function handleNoteClick() {
-        navigate("/note");
+        const storedUserData = localStorage.getItem("userData");
+
+        if (storedUserData) {
+            const userData = JSON.parse(storedUserData);
+
+            const date = new Date();
+            let month = ''
+            switch (new Date().getMonth()+1) {
+                case 1:
+                    month = "Jan";
+                    break;
+                case 2:
+                    month = "Feb";
+                    break;
+                case 3:
+                    month = "Mar";
+                    break;
+                case 4:
+                    month = "Apr";
+                    break;
+                case 5:
+                    month = "May";
+                    break;
+                case 6:
+                    month = "Jun";
+                    break;
+                case 7:
+                    month = "Jul";
+                    break;
+                case 8:
+                    month = "Aug";
+                    break;
+                case 9:
+                    month = "Sep";
+                    break;
+                case 10:
+                    month = "Oct";
+                    break;
+                case 11:
+                    month = "Nov";
+                    break;
+                case 12:
+                    month = "Dec";
+            }
+            const createDate = `${month} ${ date.getDate()}, ${date.getFullYear()}`;
+            const createTime = `${date.getHours()-12}:${date.getMinutes()} ${date.getHours()>=12? 'PM':'AM'}`;
+
+            const note = {
+                name: name,
+                selectedColor: 'white',
+                createDate: createDate,
+                createTime: createTime,
+                isBookmarked: isBookmarked,
+                icon: <FontAwesomeIcon icon={faFile}/>,
+                type: 'note',
+                pageData:''
+            }
+            userData.Documents.notes.push(note);
+            userData.Documents.allDocuments.push(note);
+
+
+            localStorage.setItem("userData", JSON.stringify(userData));
+            navigate(`/note/${name}`);
+
+        } else {
+            console.log("User data not found in local storage");
+        }
+
     }
+
+    const handleFolderSubmit = () => {
+
+        const storedUserData = localStorage.getItem("userData");
+
+        if (storedUserData) {
+            const userData = JSON.parse(storedUserData);
+
+            const date = new Date();
+            let month = ''
+            switch (new Date().getMonth()+1) {
+                case 1:
+                    month = "Jan";
+                    break;
+                case 2:
+                    month = "Feb";
+                    break;
+                case 3:
+                    month = "Mar";
+                    break;
+                case 4:
+                    month = "Apr";
+                    break;
+                case 5:
+                    month = "May";
+                    break;
+                case 6:
+                    month = "Jun";
+                    break;
+                case 7:
+                    month = "Jul";
+                    break;
+                case 8:
+                    month = "Aug";
+                    break;
+                case 9:
+                    month = "Sep";
+                    break;
+                case 10:
+                    month = "Oct";
+                    break;
+                case 11:
+                    month = "Nov";
+                    break;
+                case 12:
+                    month = "Dec";
+            }
+            const createDate = `${month} ${ date.getDate()}, ${date.getFullYear()}`;
+            const createTime = `${date.getHours()-12}:${date.getMinutes()} ${date.getHours()>=12? 'PM':'AM'}`;
+
+            const folder = {
+                name: name,
+                selectedColor: selectedColor,
+                createDate: createDate,
+                createTime: createTime,
+                isBookmarked: isBookmarked,
+                icon: <FontAwesomeIcon icon={faFolder}/>,
+                type:'folder'
+            }
+            userData.Documents.folders.push(folder);
+            userData.Documents.allDocuments.push(folder);
+
+            localStorage.setItem("userData", JSON.stringify(userData));
+
+
+            handleClose();
+        } else {
+            console.log("User data not found in local storage");
+        }
+    };
+
+    const handleNotebookSubmit = () => {
+
+        const storedUserData = localStorage.getItem("userData");
+
+        if (storedUserData) {
+            const userData = JSON.parse(storedUserData);
+
+            const date = new Date();
+            let month = ''
+            switch (new Date().getMonth()+1) {
+                case 1:
+                    month = "Jan";
+                    break;
+                case 2:
+                    month = "Feb";
+                    break;
+                case 3:
+                    month = "Mar";
+                    break;
+                case 4:
+                    month = "Apr";
+                    break;
+                case 5:
+                    month = "May";
+                    break;
+                case 6:
+                    month = "Jun";
+                    break;
+                case 7:
+                    month = "Jul";
+                    break;
+                case 8:
+                    month = "Aug";
+                    break;
+                case 9:
+                    month = "Sep";
+                    break;
+                case 10:
+                    month = "Oct";
+                    break;
+                case 11:
+                    month = "Nov";
+                    break;
+                case 12:
+                    month = "Dec";
+            }
+            const createDate = `${month} ${ date.getDate()}, ${date.getFullYear()}`;
+            const createTime = `${date.getHours()-12}:${date.getMinutes()} ${date.getHours()>=12? 'PM':'AM'}`;
+
+            const notebook = {
+                name: name,
+                selectedColor: selectedColor,
+                createDate: createDate,
+                createTime: createTime,
+                isBookmarked: isBookmarked,
+                icon: <FontAwesomeIcon icon={faBook}/>,
+                type:'notebook'
+            }
+            userData.Documents.notebooks.push(notebook);
+            userData.Documents.allDocuments.push(notebook);
+
+            localStorage.setItem("userData", JSON.stringify(userData));
+
+
+            handleClose();
+        } else {
+            console.log("User data not found in local storage");
+        }
+    };
+
 
     return (
         <div className="">
@@ -101,7 +313,7 @@ export default function Documents() {
             <BootstrapDialog
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"
-                open={folder}
+                open={folderOpen}
                 fullWidth
                 maxWidth="xs"
                 sx={{
@@ -125,7 +337,6 @@ export default function Documents() {
                         gap: 2,
                     }}
                 >
-                    {/* Folder Icon */}
                     <FontAwesomeIcon
                         icon={faFolder}
                         style={{
@@ -137,7 +348,7 @@ export default function Documents() {
                     {/* Input Box */}
                     <TextField
                         id="outlined-basic"
-                        placeholder={"Untitled"}
+                        placeholder={name}
                         variant="outlined"
                         sx={{
                             width: "100%",
@@ -147,6 +358,7 @@ export default function Documents() {
 
                             },
                         }}
+                        onChange={handleRename}
                     />
                     <div className="flex justify-center gap-2 flex-wrap">
                         {colors.map((color) => (
@@ -166,7 +378,10 @@ export default function Documents() {
                     <Button variant="outlined" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="contained" onClick={handleClose}>
+                    <Button variant="contained" onClick={() => {
+                        handleFolderSubmit();
+                        handleClose();
+                    }}>
                         Done
                     </Button>
                 </DialogActions>
@@ -176,7 +391,7 @@ export default function Documents() {
             <BootstrapDialog
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"
-                open={notebook}
+                open={notebookOpen}
                 fullWidth
                 maxWidth="xs"
                 sx={{
@@ -212,7 +427,7 @@ export default function Documents() {
                     {/* Input Box */}
                     <TextField
                         id="outlined-basic"
-                        placeholder={"Untitled"}
+                        placeholder={name}
                         variant="outlined"
                         sx={{
                             width: "100%",
@@ -222,6 +437,7 @@ export default function Documents() {
 
                             },
                         }}
+                        onChange={handleRename}
                     />
                     <div className="flex justify-center gap-2 flex-wrap">
                         {colors.map((color) => (
@@ -241,7 +457,10 @@ export default function Documents() {
                     <Button variant="outlined" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="contained" onClick={handleClose}>
+                    <Button variant="contained" onClick={() => {
+                        handleNotebookSubmit();
+                        handleClose();
+                    }}>
                         Done
                     </Button>
                 </DialogActions>

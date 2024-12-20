@@ -23,3 +23,10 @@
  font-weight: 400;
  font-style: normal;
 }
+code {
+    background-color: #eee;
+    border-radius: 3px;
+    font-family: courier, monospace;
+    padding: 0 3px;
+    cursor: pointer;
+}

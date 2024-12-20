@@ -12,10 +12,29 @@ import Note from "./pages/Note.tsx";
 import Shared from "./pages/Shared.tsx";
 
 export default function App() {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData){
+
+    } else {
+
+        localStorage.setItem("userData", JSON.stringify({
+            Documents: {
+                folders:[],
+                notebooks:[],
+                notes:[],
+                allDocuments:[]
+            },
+            Bookmarks: {},
+            Shared: {},
+            Trash: {}
+        }))
+    }
+
+
     return (
         <Routes>
             <Route path="/" element={<Documents />} />
-            <Route path="/note" element={<Note />} />
+            <Route path="/note/:name" element={<Note />} />
             <Route path="/sign-in" element={<Signin/>} />
             <Route path="/sign-up" element={<Signup />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
